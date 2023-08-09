@@ -1,7 +1,7 @@
 import json
 import boto3
 import base64
-#import requests
+import requests
 import logging
 from datetime import datetime
 
