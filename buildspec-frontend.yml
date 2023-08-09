@@ -2,5 +2,5 @@ version: 0.2
 phases:
   post_build:
     commands:
-      - echo "Updating files in the S3 bucket..."
+      - echo "Update frontend files"
       - aws s3 sync ./ s3://frontend-bucket2 --exclude "*" --include "apiGateway-js-sdk 3/**" --include "index.html" --include "index.css" --include "index.js"  --include "aws-sdk.min.js"
