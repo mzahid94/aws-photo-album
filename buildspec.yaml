@@ -13,5 +13,4 @@ phases:
       - echo "Updating lambda Functions in aws"
       - aws lambda update-function-code --function-name index-photos --zip-file fileb://index-photos.zip
       - aws lambda update-function-code --function-name search-photos --zip-file fileb://search-photos.zip
-artifacts:
-  files: imagedefinitions.json
+
