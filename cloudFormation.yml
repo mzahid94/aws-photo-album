@@ -1,0 +1,64 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation Template for Photos App
+
+Resources:
+  FrontendBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: frontend-bucket-a2
+      AccessControl: PublicRead
+      WebsiteConfiguration:
+        IndexDocument: index.html
+
+  PhotoStorageBucket:
+    Type: AWS::S3::Bucket
+    Properties:
+      BucketName: photo-storage-bucket-a2
+
+  PhotoAppAPI:
+    Type: AWS::ApiGateway::RestApi
+    Properties:
+      Name: PhotoAppAPI
+
+  IndexPhotosFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: index-photos2
+      Role: arn:aws:iam::546066487972:role/lambda-role
+      Code:
+        S3Bucket: lambda-bucket
+        S3Key: lf1.zip
+      Handler: lf1.handler
+      Runtime: python3.11
+
+  SearchPhotosFunction:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: search-photos2
+      Role: arn:aws:iam::546066487972:role/lambda-role
+      Code:
+        S3Bucket: lambda-bucket
+        S3Key: lf2.zip
+      Handler: lf2.handler
+      Runtime: python3.11
+
+  SearchResource:
+    Type: AWS::ApiGateway::Resource
+    Properties:
+      RestApiId: !Ref PhotoAppAPI
+      ParentId: !GetAtt PhotoAppAPI.RootResourceId
+      PathPart: search
+
+  SearchGetMethod:
+    Type: AWS::ApiGateway::Method
+    Properties:
+      RestApiId: !Ref PhotoAppAPI
+      ResourceId: !Ref SearchResource
+      HttpMethod: GET
+      AuthorizationType: NONE
+
+Outputs:
+
+  PhotoAppAPIEndpoint:
+    Description: URL of the deployed PhotoAppAPI
+    Value: !Sub "https://${PhotoAppAPI}.execute-api.${AWS::Region}.amazonaws.com"
