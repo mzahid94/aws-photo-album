@@ -12,6 +12,7 @@ logger.setLevel(logging.INFO)
 def lambda_handler(event, context):
     try:
         # Extract relevant information from the S3 PUT event
+        print('testing codebuild')
         s3_event = event['Records'][0]['s3']
         bucket_name = s3_event['bucket']['name']
         object_key = s3_event['object']['key']
